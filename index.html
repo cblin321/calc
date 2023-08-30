@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="calc-content">
+        <p class="display"></p>
+        <div class="del-container">
+            <button class="clear">CLR</button>
+            <button class="del">DEL</button>
+        </div>
+        <div class="button-container">
+            <button class="digit">1</button>
+            <button class="digit">2</button>
+            <button class="digit">3</button>
+            <button class="add">+</button>
+            <button class="digit">4</button>
+            <button class="digit">5</button>
+            <button class="digit">6</button>
+            <button class="mult">x</button>
+            <button class="digit">7</button>
+            <button class="digit">8</button>
+            <button class="digit">9</button>
+            <button class="sub">-</button>
+            <button class="frac">.</button>
+            <button class="digit">0</button>
+            <button class="operate">=</button>
+            <button class="divide">÷</button>
+        </div>
+    </div>
+</body>
+
+<script>
+    let n1 = "";
+    let n2 = "";
+    const addOp = document.querySelector(".add");
+    const mult = document.querySelector(".mult");
+    const sub = document.querySelector(".sub");
+    const div = document.querySelector(".divide");
+    const oper = document.querySelector(".operate");
+    const digits = document.querySelectorAll(".digit");
+    const display = document.querySelector(".display");
+    const clear = document.querySelector(".clear");
+    const del = document.querySelector(".del");
+    const frac = document.querySelector(".frac");
+    let op = null;
+    let result = 0;
+    addOp.addEventListener("click", (e) => {
+        if (op == null) {
+            op = "+";
+            display.textContent += op;
+        } else {
+            op = "+";
+            display.textContent = display.textContent.slice(0, display.textContent.length - 1) + op;
+        }
+    });
+    mult.addEventListener("click", (e) => {
+        if (op == null) {
+            op = "x";
+            display.textContent += op;
+            
+        } else {
+            op = "x";
+            display.textContent = display.textContent.slice(0, display.textContent.length - 1) + op;
+        }
+    });
+    sub.addEventListener("click", (e) => {
+        if (op == null) {
+            op = "-";
+            display.textContent += op;
+        } else {
+            op = "-";
+            display.textContent = display.textContent.slice(0, display.textContent.length - 1) + op;
+        }
+    });
+    div.addEventListener("click", (e) => {
+        if (op == null) {
+            op = "/";
+            display.textContent += op;
+        } else {
+            op = "/";
+            display.textContent = display.textContent.slice(0, display.textContent.length - 1) + op;
+        }
+    });
+    digits.forEach((n) => {
+        n.addEventListener("click", (e) => {
+            if (n1 == "" || op == null) {
+                n1 += n.textContent;
+                display.textContent += n.textContent;
+            }
+            else if (op != null) {
+                n2 += n.textContent;
+                display.textContent += n.textContent;
+            }
+            else 
+                return;
+            console.log(`${n1} ${n2} ${op}`);
+        });
+    });
+    oper.addEventListener("click", (e) => {
+        if (n2 == 0 && op == "/")
+            console.log("You have no friends");
+        result = operate(n1, n2, op);
+        if (!result)
+            return;
+        display.textContent = `${result}`;
+        n1 = result.toString();
+        n2 = "";
+        op = null;
+    });
+    clear.addEventListener("click", (e) => {
+        n1 = "";
+        n2 = "";
+        op = null;
+        display.textContent = "";
+        result = 0;
+    });
+    del.addEventListener("click", (e) => {
+        if (op == null) {
+            display.textContent = `${display.textContent.slice(0, n1.length - 1).toString()}${display.textContent.slice(n1.length + 1, display.textContent.length).toString()}`;
+            n1 = n1.slice(0, n1.length - 1);
+            //TODO account for decimal n1
+        } else  {
+            display.textContent = display.textContent.slice(0, n1.length - 1) + display.textContent.slice(n1.length + 1, display.textContent.length).toString();
+            n2 = n2.slice(0, n2.length - 1);
+        }
+    });
+    frac.addEventListener("click", (e) => {
+        if (op == null) {
+            if (!n1.includes(".")) {
+                n1 += ".";
+                display.textContent += ".";
+            }
+        } else {
+            if (!n2.includes(".")) {
+                n2 += ".";
+                display.textContent += ".";
+            }
+        }
+    });
+</script>
+
+</html>
